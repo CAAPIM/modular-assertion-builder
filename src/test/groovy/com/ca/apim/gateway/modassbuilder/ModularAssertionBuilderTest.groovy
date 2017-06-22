@@ -1,4 +1,4 @@
-package com.ca.apim.gateway;
+package com.ca.apim.gateway.modassbuilder;
 
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
