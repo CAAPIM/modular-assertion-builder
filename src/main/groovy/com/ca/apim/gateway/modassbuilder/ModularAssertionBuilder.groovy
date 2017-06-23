@@ -10,11 +10,10 @@ class ModularAssertionBuilder implements Plugin<Project> {
 
         project.sourceCompatibility = 1.8
 
-        project.extensions.create("ModularAssertionBuilder", ExtensionBuilderExtension)
+        // Creates an extension for holding configuration for the plugin
+        project.extensions.create("ModularAssertionBuilder", ModularAssertionExtension)
 
         project.repositories {
-            //mavenCentral()
-            //jcenter()
             maven {
                 url "http://artifactory-van.ca.com/artifactory/maven-repo"
             }
@@ -22,6 +21,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
 
         project.configurations {
             releaseJars {
+                //makes it so that release jars do not bring in their dependencies, they must all be explicitly specified
                 transitive = false
             }
             compile {
@@ -64,6 +64,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
             )
         }
 
+        // This is used to compile the intellij forms
         project.task('compileJava', overwrite: true, dependsOn: project.configurations.compile.getTaskDependencyFromProjectDependency(true, 'jar')) {
             doLast {
                 project.sourceSets.main.output.classesDir.mkdirs()
@@ -77,7 +78,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
             }
         }
 
-
+        //builds the aar configuration
         project.task('configureAAR') {
             doLast {
                 FileTree tree = project.fileTree(
@@ -139,6 +140,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
             }
         }
 
+        // creates the aar
         project.jar {
             dependsOn project.configureAAR
             version = "$project.version"
@@ -163,7 +165,3 @@ class ModularAssertionBuilder implements Plugin<Project> {
     }
 }
 
-class ExtensionBuilderExtension {
-    String assertionName
-    String gatewayBaseVersion = '9.2.00'
-}
