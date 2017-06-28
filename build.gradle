@@ -1,5 +1,5 @@
+description='The modular assertion builder plugin can be used to build modular assertions for the CA API Gateway'
 group 'com.ca.apim.gateway'
-version '0.1.00-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
@@ -23,7 +23,11 @@ task sourceJar(type: Jar) {
 publishing {
     repositories {
         maven {
-            url "http://artifactory-van.ca.com/artifactory/maven-repo"
+            credentials {
+                username mavenUser
+                password mavenPassword
+            }
+            url mavenUrl
         }
     }
     publications {
