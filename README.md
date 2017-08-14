@@ -6,21 +6,24 @@ The modular assertion builder is a gradle plugin that can be used to build modul
 In order to use this plugin to build a modular assertion add the following you your gradle file:
 
 ```groovy
+group 'com.ca'
+version '<assertion-version>'
+
 apply plugin: 'com.ca.apim.gateway.modassbuilder.modular-assertion-builder'
 
 buildscript {
     repositories {
         maven {
-            url "http://isl-dsdc.ca.com/artifactory/maven-release-candidate-local"
+            url "http://artifactory-van.ca.com/artifactory/isl-maven-proxy-cache"
         }
     }
     dependencies {
-        classpath 'com.ca.apim.gateway.modassbuilder:ModularAssertionBuilder:<version>'
+        classpath 'com.ca.apim.gateway:ModularAssertionBuilder:<version>'
     }
 }
 
-ModularAssertionBuilder {
-    gatewayBaseVersion = '9.2.00'
+modassBuilder {
+    gatewayBaseVersion = '<gateway-version>'
     assertionName='My-Modular-Assertion'
 }
 
@@ -30,8 +33,6 @@ dependencies {
     )
 }
 ```
-
-# Contributing
 
 # Branching and Tags
 
