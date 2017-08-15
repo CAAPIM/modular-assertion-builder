@@ -3,6 +3,7 @@ package com.ca.apim.gateway.modassbuilder
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencyResolutionListener
+import org.gradle.api.artifacts.DependencyResolveDetails
 import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.file.FileTree
 
@@ -20,12 +21,6 @@ class ModularAssertionBuilder implements Plugin<Project> {
         // Creates an extension for holding configuration for the plugin
         ModularAssertionExtension modassBuilder = project.extensions.create("modassBuilder", ModularAssertionExtension)
 
-        project.repositories {
-            maven {
-                url "http://artifactory-van.ca.com/artifactory/isl-maven-proxy-cache"
-            }
-        }
-
         project.configurations {
             releaseJars {
                 //makes it so that release jars do not bring in their dependencies, they must all be explicitly specified
@@ -35,6 +30,16 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 extendsFrom releaseJars
             }
             antTask
+
+            all.compileClasspath {
+                resolutionStrategy.eachDependency {
+                    DependencyResolveDetails details ->
+                        if ("com.l7tech" == details.requested.group && !(details.requested.name in ["layer7-api"])) {
+                            project.logger.info "Overriding dependency ${details.requested.group}:${details.requested.name} version ${details.requested.version} --> $modassBuilder.gatewayBaseVersion"
+                            details.useVersion "$modassBuilder.gatewayBaseVersion"
+                        }
+                }
+            }
         }
 
         compileDeps = project.getConfigurations().getByName("compile").getDependencies()

@@ -22,6 +22,12 @@ buildscript {
     }
 }
 
+repositories {
+    maven {
+        url "http://isl-dsdc.ca.com/artifactory/maven-integration-local"
+    }
+}
+
 modassBuilder {
     gatewayBaseVersion = '<gateway-version>'
     assertionName='My-Modular-Assertion'
