@@ -75,7 +75,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                     "com.intellij:javac2:1.8.0_112-release-287-b2",
                     "com.intellij:forms_rt:11.1.2",
                     "org.objectweb:asm-all:1.8.0_72-b15",
-                    "org.jdom:jdom:1.1"
+                    "jdom:jdom:1.1.3"
             )
         }
 
