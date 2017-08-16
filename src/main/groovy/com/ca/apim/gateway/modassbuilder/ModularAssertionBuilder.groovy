@@ -34,7 +34,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
             all.compileClasspath {
                 resolutionStrategy.eachDependency {
                     DependencyResolveDetails details ->
-                        if ("com.l7tech" == details.requested.group && !(details.requested.name in ["layer7-api"])) {
+                        if ("com.l7tech" == details.requested.group && !(details.requested.name in ["layer7-api", "layer7-gateway-api"])) {
                             project.logger.info "Overriding dependency ${details.requested.group}:${details.requested.name} version ${details.requested.version} --> $modassBuilder.gatewayBaseVersion"
                             details.useVersion "$modassBuilder.gatewayBaseVersion"
                         }
