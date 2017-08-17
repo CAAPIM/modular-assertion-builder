@@ -39,6 +39,8 @@ class ModularAssertionBuilder implements Plugin<Project> {
                         details.useVersion "$modassBuilder.gatewayBaseVersion"
                     }
             }
+            // check for dependency updates every build
+            resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
         }
 
         compileDeps = project.getConfigurations().getByName("compile").getDependencies()
