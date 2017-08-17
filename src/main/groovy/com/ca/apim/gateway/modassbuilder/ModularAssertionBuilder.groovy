@@ -172,6 +172,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
         )
 
         testCompileDeps.addAll(
+                project.getDependencies().create("com.l7tech:layer7-common:$modassBuilder.gatewayBaseVersion"),    
                 project.getDependencies().create("com.l7tech:layer7-test:$modassBuilder.gatewayBaseVersion")
         )
     }
