@@ -9,7 +9,7 @@ In order to use this plugin to build a modular assertion add the following you y
 group 'com.ca'
 version '<assertion-version>'
 
-apply plugin: 'com.ca.apim.gateway.modassbuilder.modular-assertion-builder'
+apply plugin: 'com.ca.apim.gateway.modular-assertion-builder'
 
 buildscript {
     repositories {
@@ -28,7 +28,7 @@ repositories {
     }
 }
 
-modassBuilder {
+modularAssertionBuilder {
     gatewayBaseVersion = '<gateway-version>'
     assertionName='My-Modular-Assertion'
 }

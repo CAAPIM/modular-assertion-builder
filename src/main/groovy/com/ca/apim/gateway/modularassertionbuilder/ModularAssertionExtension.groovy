@@ -1,4 +1,4 @@
-package com.ca.apim.gateway.modassbuilder
+package com.ca.apim.gateway.modularassertionbuilder
 
 class ModularAssertionExtension {
     String assertionName

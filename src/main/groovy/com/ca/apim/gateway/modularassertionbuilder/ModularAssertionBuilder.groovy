@@ -1,4 +1,4 @@
-package com.ca.apim.gateway.modassbuilder
+package com.ca.apim.gateway.modularassertionbuilder
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,7 +19,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
         project.sourceCompatibility = 1.8
 
         // Creates an extension for holding configuration for the plugin
-        ModularAssertionExtension modassBuilder = project.extensions.create("modassBuilder", ModularAssertionExtension)
+        ModularAssertionExtension modularAssertionBuilder = project.extensions.create("modularAssertionBuilder", ModularAssertionExtension)
 
         project.configurations {
             releaseJars {
@@ -35,8 +35,8 @@ class ModularAssertionBuilder implements Plugin<Project> {
             resolutionStrategy.eachDependency {
                 DependencyResolveDetails details ->
                     if ("com.l7tech" == details.requested.group && !(details.requested.name in ["layer7-api", "layer7-gateway-api"])) {
-                        project.logger.info "Overriding dependency ${details.requested.group}:${details.requested.name} version ${details.requested.version} --> $modassBuilder.gatewayBaseVersion"
-                        details.useVersion "$modassBuilder.gatewayBaseVersion"
+                        project.logger.info "Overriding dependency ${details.requested.group}:${details.requested.name} version ${details.requested.version} --> $modularAssertionBuilder.gatewayBaseVersion"
+                        details.useVersion "$modularAssertionBuilder.gatewayBaseVersion"
                     }
             }
             // check for dependency updates every build
@@ -45,12 +45,12 @@ class ModularAssertionBuilder implements Plugin<Project> {
 
         compileDeps = project.getConfigurations().getByName("compile").getDependencies()
         testCompileDeps = project.getConfigurations().getByName("testCompile").getDependencies()
-        // Need to add a dependency resolution listener in order to add the gateway dependencies because the modassBuilder is not available till later
+        // Need to add a dependency resolution listener in order to add the gateway dependencies because the modularAssertionBuilder is not available till later
         project.getGradle().addListener(new DependencyResolutionListener() {
             @Override
             void beforeResolve(ResolvableDependencies resolvableDependencies) {
-                addDeps(modassBuilder)
-                addJar(modassBuilder)
+                addDeps(modularAssertionBuilder)
+                addJar(modularAssertionBuilder)
                 project.getGradle().removeListener(this)
             }
 
@@ -157,40 +157,40 @@ class ModularAssertionBuilder implements Plugin<Project> {
         }
     }
 
-    def addDeps(modassBuilder) {
+    def addDeps(modularAssertionBuilder) {
         compileDeps.addAll(
-                project.getDependencies().create("com.l7tech:layer7-utility:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-common:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-policy:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-policy-exporter:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gui:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-common:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-server:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-proxy:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-console:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-kerberos:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-identity:$modassBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gui:$modassBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-utility:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-common:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-policy:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-policy-exporter:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-gui:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-gateway-common:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-gateway-server:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-proxy:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-gateway-console:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-kerberos:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-identity:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-gui:$modularAssertionBuilder.gatewayBaseVersion"),
         )
 
         testCompileDeps.addAll( 
-                project.getDependencies().create("com.l7tech:layer7-test:$modassBuilder.gatewayBaseVersion")
+                project.getDependencies().create("com.l7tech:layer7-test:$modularAssertionBuilder.gatewayBaseVersion")
         )
     }
 
-    def addJar(modassBuilder) {
+    def addJar(modularAssertionBuilder) {
         // creates the aar
         project.jar {
             dependsOn project.configureAAR
             version = "$project.version"
-            baseName = "$modassBuilder.assertionName"
+            baseName = "$modularAssertionBuilder.assertionName"
             manifest {
                 attributes(
                         "Specification-Title": "ModularAssertion",
                         "Specification-Version": "3.7.0",
                         "Specification-Vendor": "Layer 7 Technologies",
                         "Specification-endor-Id": "com.l7tech",
-                        "Implementation-Title": "$modassBuilder.assertionName",
+                        "Implementation-Title": "$modularAssertionBuilder.assertionName",
                         "Implementation-Version": "$project.version",
                         "Implementation-Vendor": "Layer 7 Technologies",
                         "Implementation-Vendor-Id": "com.l7tech",
