@@ -60,3 +60,13 @@ Property       | Description
 mavenUser      | This is the name of the artifactory user to authenticate with
 mavenPassword  | This is the password of the artifactory user to authenticate with
 mavenUrl       | This is the artifact repository url to publish to.
+
+## License
+
+Copyright (c) 2017 CA. All rights reserved.
+
+This software may be modified and distributed under the terms
+of the MIT license. See the [LICENSE][license-link] file for details.
+
+
+ [license-link]: /LICENSE
