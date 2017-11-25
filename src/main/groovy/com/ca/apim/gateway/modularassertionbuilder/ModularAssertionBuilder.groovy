@@ -62,20 +62,15 @@ class ModularAssertionBuilder implements Plugin<Project> {
         project.dependencies {
             //Below are required modular assertion dependencies
             compile(
-                    "com.intellij:annotations:13.1.6",
-                    "com.intellij:forms_rt:11.1.2",
+                    "com.intellij:annotations:12.0",
+                    "com.intellij:forms_rt:7.0.3",
                     "javax.inject:javax.inject:1"
             )
 
-            testCompile(
-                    "junit:junit:4.12",
-                    "org.mockito:mockito-core:1.10.19",
-            )
-
             antTask(
-                    "com.intellij:javac2:1.8.0_112-release-287-b2",
-                    "com.intellij:forms_rt:11.1.2",
-                    "org.objectweb:asm-all:1.8.0_72-b15",
+                    "com.intellij:javac2:7.0.3",
+                    "com.intellij:forms_rt:7.0.3",
+                    "asm:asm:2.2.3",
                     "jdom:jdom:1.1.3"
             )
         }
@@ -155,6 +150,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 }
             }
         }
+        project.jar.dependsOn project.configureAAR
     }
 
     def addDeps(modularAssertionBuilder) {
@@ -162,26 +158,18 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 project.getDependencies().create("com.l7tech:layer7-utility:$modularAssertionBuilder.gatewayBaseVersion"),
                 project.getDependencies().create("com.l7tech:layer7-common:$modularAssertionBuilder.gatewayBaseVersion"),
                 project.getDependencies().create("com.l7tech:layer7-policy:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-policy-exporter:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gui:$modularAssertionBuilder.gatewayBaseVersion"),
                 project.getDependencies().create("com.l7tech:layer7-gateway-common:$modularAssertionBuilder.gatewayBaseVersion"),
                 project.getDependencies().create("com.l7tech:layer7-gateway-server:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-proxy:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-console:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-kerberos:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-identity:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gui:$modularAssertionBuilder.gatewayBaseVersion"),
         )
 
         testCompileDeps.addAll( 
-                project.getDependencies().create("com.l7tech:layer7-test:$modularAssertionBuilder.gatewayBaseVersion")
+//                project.getDependencies().create("com.l7tech:layer7-test:$modularAssertionBuilder.gatewayBaseVersion")
         )
     }
 
     def addJar(modularAssertionBuilder) {
         // creates the aar
         project.jar {
-            dependsOn project.configureAAR
             version = "$project.version"
             baseName = "$modularAssertionBuilder.assertionName"
             manifest {
