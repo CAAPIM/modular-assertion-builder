@@ -61,6 +61,10 @@ mavenUser      | This is the name of the artifactory user to authenticate with
 mavenPassword  | This is the password of the artifactory user to authenticate with
 mavenUrl       | This is the artifact repository url to publish to.
 
+### publish to local
+You can also publish the modular assertion builder to your local maven repository by running:
+```gradle -i publishToMavenLocal```
+
 ## License
 
 Copyright (c) 2017 CA. All rights reserved.
