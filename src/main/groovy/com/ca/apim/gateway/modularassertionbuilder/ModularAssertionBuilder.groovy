@@ -29,7 +29,6 @@ class ModularAssertionBuilder implements Plugin<Project> {
             compile {
                 extendsFrom releaseJars
             }
-            antTask
         }
         project.configurations.all {
             resolutionStrategy.eachDependency {
@@ -57,37 +56,6 @@ class ModularAssertionBuilder implements Plugin<Project> {
             @Override
             void afterResolve(ResolvableDependencies resolvableDependencies) {}
         })
-
-
-        project.dependencies {
-            //Below are required modular assertion dependencies
-            compile(
-                    "com.intellij:annotations:12.0",
-                    "com.intellij:forms_rt:7.0.3",
-                    "javax.inject:javax.inject:1"
-            )
-
-            antTask(
-                    "com.intellij:javac2:7.0.3",
-                    "com.intellij:forms_rt:7.0.3",
-                    "asm:asm:2.2.3",
-                    "jdom:jdom:1.1.3"
-            )
-        }
-
-        // This is used to compile the intellij forms
-        project.task('compileJava', overwrite: true, dependsOn: project.configurations.compile.getTaskDependencyFromProjectDependency(true, 'jar')) {
-            doLast {
-                project.sourceSets.main.output.classesDir.mkdirs()
-                project.ant.taskdef name: 'javac2', classname: 'com.intellij.ant.Javac2', classpath: project.configurations.antTask.asPath
-                project.ant.javac2 srcdir: project.sourceSets.main.java.srcDirs.join(':'),
-                        classpath: project.sourceSets.main.compileClasspath.asPath,
-                        destdir: project.sourceSets.main.output.classesDir,
-                        source: project.sourceCompatibility,
-                        target: project.targetCompatibility,
-                        includeAntRuntime: false
-            }
-        }
 
         //builds the aar configuration
         project.task('configureAAR') {
@@ -160,6 +128,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 project.getDependencies().create("com.l7tech:layer7-policy:$modularAssertionBuilder.gatewayBaseVersion"),
                 project.getDependencies().create("com.l7tech:layer7-gateway-common:$modularAssertionBuilder.gatewayBaseVersion"),
                 project.getDependencies().create("com.l7tech:layer7-gateway-server:$modularAssertionBuilder.gatewayBaseVersion"),
+                project.getDependencies().create("com.l7tech:layer7-gateway-console:$modularAssertionBuilder.gatewayBaseVersion"),
         )
 
         testCompileDeps.addAll( 
