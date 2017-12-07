@@ -1,7 +1,13 @@
-package com.ca.apim.gateway.modularassertionbuilder;
+/*
+ * Copyright (c) 2017 CA. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
 
-import org.gradle.api.Project;
-import org.gradle.testfixtures.ProjectBuilder;
+package com.ca.apim.gateway.modularassertionbuilder
+
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Test
 
 class ModularAssertionBuilderTest {

@@ -1,15 +1,18 @@
+/*
+ * Copyright (c) 2017 CA. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
+
 package com.ca.apim.gateway.modularassertionbuilder
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencyResolutionListener
-import org.gradle.api.artifacts.DependencyResolveDetails
 import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.file.FileTree
 
 class ModularAssertionBuilder implements Plugin<Project> {
-    def compileDeps
-    def testCompileDeps
     Project project
 
     void apply(Project project) {
@@ -30,25 +33,10 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 extendsFrom releaseJars
             }
         }
-        project.configurations.all {
-            resolutionStrategy.eachDependency {
-                DependencyResolveDetails details ->
-                    if ("com.l7tech" == details.requested.group && !(details.requested.name in ["layer7-api", "layer7-gateway-api"])) {
-                        project.logger.info "Overriding dependency ${details.requested.group}:${details.requested.name} version ${details.requested.version} --> $modularAssertionBuilder.gatewayBaseVersion"
-                        details.useVersion "$modularAssertionBuilder.gatewayBaseVersion"
-                    }
-            }
-            // check for dependency updates every build
-            resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-        }
 
-        compileDeps = project.getConfigurations().getByName("compile").getDependencies()
-        testCompileDeps = project.getConfigurations().getByName("testCompile").getDependencies()
-        // Need to add a dependency resolution listener in order to add the gateway dependencies because the modularAssertionBuilder is not available till later
         project.getGradle().addListener(new DependencyResolutionListener() {
             @Override
             void beforeResolve(ResolvableDependencies resolvableDependencies) {
-                addDeps(modularAssertionBuilder)
                 addJar(modularAssertionBuilder)
                 project.getGradle().removeListener(this)
             }
@@ -82,7 +70,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 )
                 assertionClasses = ''
                 tree.each { File file ->
-                    assertionClasses = assertionClasses + '\n' + file.path.replaceAll('.*/build/classes/main/', '')
+                    assertionClasses = assertionClasses + '\n' + file.path.replaceAll('.*/build/classes/java/main/', '')
                 }
                 if (assertionClasses.length() > 0) {
                     assertionClasses = assertionClasses.substring(1)
@@ -105,7 +93,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
 
                 assertionClasses = ''
                 tree.each { File file ->
-                    assertionClasses = assertionClasses + '\n' + file.path.replaceAll('.*/build/(classes|resources)/main/', '')
+                    assertionClasses = assertionClasses + '\n' + file.path.replaceAll('.*/build/(classes/java|resources)/main/', '')
                 }
                 if (assertionClasses.length() > 0) {
                     assertionClasses = assertionClasses.substring(1)
@@ -119,21 +107,6 @@ class ModularAssertionBuilder implements Plugin<Project> {
             }
         }
         project.jar.dependsOn project.configureAAR
-    }
-
-    def addDeps(modularAssertionBuilder) {
-        compileDeps.addAll(
-                project.getDependencies().create("com.l7tech:layer7-utility:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-common:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-policy:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-common:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-server:$modularAssertionBuilder.gatewayBaseVersion"),
-                project.getDependencies().create("com.l7tech:layer7-gateway-console:$modularAssertionBuilder.gatewayBaseVersion"),
-        )
-
-        testCompileDeps.addAll( 
-//                project.getDependencies().create("com.l7tech:layer7-test:$modularAssertionBuilder.gatewayBaseVersion")
-        )
     }
 
     def addJar(modularAssertionBuilder) {
@@ -160,6 +133,5 @@ class ModularAssertionBuilder implements Plugin<Project> {
             }
         }
     }
-
 }
 
