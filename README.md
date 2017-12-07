@@ -65,6 +65,9 @@ mavenUrl       | This is the artifact repository url to publish to.
 You can also publish the modular assertion builder to your local maven repository by running:
 ```gradle -i publishToMavenLocal```
 
+## How You Can Contribute
+Contributions are welcome and much appreciated. To learn more, see the [Contribution Guidelines][contributing].
+
 ## License
 
 Copyright (c) 2017 CA. All rights reserved.
@@ -74,3 +77,4 @@ of the MIT license. See the [LICENSE][license-link] file for details.
 
 
  [license-link]: /LICENSE
+ [contributing]: /CONTRIBUTING.md

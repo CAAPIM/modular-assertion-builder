@@ -1,4 +1,4 @@
-# Contribute to gateway-assertion-helloworld
+# Contribute to modular-assertion-builder
 Contributions are welcome and much appreciated. Just follow these easy steps to contribute.
 
 ### Pull Requests
@@ -15,7 +15,7 @@ Follow these steps for pull requests:
 ### Contributor License Agreement ("CLA")
 To accept pull requests, submit a CLA. (Submitting a single CLA lets you work on any open source projects from CA, Inc.)
 
-Complete your CLA here: <https://www.clahub.com/agreements/CAAPIM/gateway-assertion-helloworld>
+Complete your CLA here: <https://www.clahub.com/agreements/CAAPIM/modular-assertion-builder>
 
 ## Bugs
 We work hard to avoid them, but they still happen. Use GitHub issues to report bug and other issues.
@@ -36,9 +36,9 @@ Before filing a new issue, check Known Issues to see if your problem already exi
 * Anything else that seems relevant.
 
 ## License
-By contributing to gateway-assertion-helloworld, you agree that your contributions will be licensed under its [license][license-link].
+By contributing to modular-assertion-builder, you agree that your contributions will be licensed under its [license][license-link].
 
 
  [community]: https://communities.ca.com/community/ca-api-management-community/content?filterID=contentstatus%5Bpublished%5D~category%5Bca-api-gateway%5D
  [license-link]: /LICENSE
- [cla]: https://www.clahub.com/agreements/CAAPIM/gateway-assertion-helloworld
+ [cla]: https://www.clahub.com/agreements/CAAPIM/modular-assertion-builder
