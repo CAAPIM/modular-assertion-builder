@@ -26,8 +26,8 @@ class ModularAssertionBuilder implements Plugin<Project> {
 
         project.configurations {
             releaseJars {
-                //makes it so that release jars do not bring in their dependencies, they must all be explicitly specified
-                transitive = false
+                //makes it so that release jars do bring in their dependencies
+                transitive = true
             }
             compile {
                 extendsFrom releaseJars
