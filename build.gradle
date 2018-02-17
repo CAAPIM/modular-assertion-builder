@@ -3,16 +3,18 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
  */
+plugins {
+    id "com.gradle.plugin-publish" version "0.9.10"
+}
 
 description = 'The modular assertion builder plugin can be used to build modular assertions for the CA API Gateway'
 group 'com.ca.apim.gateway'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
-apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
-version = "0.3.03-SNAPSHOT"
+version = "0.4.00"
 
 dependencies {
     compile gradleApi()
@@ -27,22 +29,16 @@ task sourceJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-publishing {
-    repositories {
-        maven {
-            credentials {
-                username mavenUser
-                password mavenPassword
-            }
-            url mavenUrl
-        }
-    }
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourceJar {
-                classifier "sources"
-            }
+pluginBundle {
+    website = 'https://github.com/ca-api-gateway/Modular-Assertion-Builder'
+    vcsUrl = 'https://github.com/ca-api-gateway/Modular-Assertion-Builder'
+
+    plugins {
+        greetingsPlugin {
+            id = 'com.ca.apim.gateway.modular-assertion-builder'
+            displayName = 'CA API Gateway Modular Assertion Builder Gradle Plugin'
+            description = 'The modular assertion builder plugin can be used to build modular assertions for the CA API Gateway'
+            tags = ['ca api gateway','building']
         }
     }
 }
