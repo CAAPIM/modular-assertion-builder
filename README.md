@@ -22,7 +22,7 @@ repositories {
 modularAssertionBuilder {
     gatewayBaseVersion = '<gateway-version>'
     assertionName='My-Modular-Assertion'
-    revision='<source code revision id>'
+    revision='<source code revision id>' // optional property to id the source commit, e.g. git commit hash / svn revision number
 }
 
 dependencies {
