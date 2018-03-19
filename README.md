@@ -22,6 +22,7 @@ repositories {
 modularAssertionBuilder {
     gatewayBaseVersion = '<gateway-version>'
     assertionName='My-Modular-Assertion'
+    revision='<source code revision id>'
 }
 
 dependencies {
