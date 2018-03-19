@@ -55,7 +55,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 project.sourceSets.main.java.getSrcDirs().each { tree.dir = it }
                 def assertionClasses = ''
                 tree.each { File file ->
-                    assertionClasses = assertionClasses + ' ' + file.path.replaceAll('.*/src/main/java/', '').replaceAll('\\.java', '').replaceAll('/', '.')
+                    assertionClasses = assertionClasses + ' ' + file.path.replaceAll('.*/src/main/java/', '').replaceAll('\\.java', '').replaceAll('/', '.').replaceAll('.*\\\\src\\\\main\\\\java\\\\','').replaceAll('\\\\','.')
                 }
                 if (assertionClasses.length() > 0) {
                     assertionClasses = assertionClasses.substring(1)
@@ -124,7 +124,8 @@ class ModularAssertionBuilder implements Plugin<Project> {
                         "Implementation-Version": "$project.version",
                         "Implementation-Vendor": "Layer 7 Technologies",
                         "Implementation-Vendor-Id": "com.l7tech",
-                        "ModularAssertion-Private-Libraries": ""
+                        "ModularAssertion-Private-Libraries": "",
+                        "Revision": "$modularAssertionBuilder.revision"
                 )
             }
             extension = "aar"
