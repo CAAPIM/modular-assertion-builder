@@ -71,6 +71,9 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 assertionClasses = ''
                 tree.each { File file ->
                     assertionClasses = assertionClasses + '\n' + file.path.replaceAll('.*/build/classes/java/main/', '')
+                            .replace(project.sourceSets.main.output.classesDir.toString(),'')
+                            .replace("\\", "/")     // for win machines
+                            .substring(1)   // removing leading slash
                 }
                 if (assertionClasses.length() > 0) {
                     assertionClasses = assertionClasses.substring(1)
@@ -94,6 +97,9 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 assertionClasses = ''
                 tree.each { File file ->
                     assertionClasses = assertionClasses + '\n' + file.path.replaceAll('.*/build/(classes/java|resources)/main/', '')
+                            .replace(project.sourceSets.main.output.classesDir.toString(),'')
+                            .replace("\\", "/")
+                            .substring(1)   // remove leading slash as with assertion.index
                 }
                 if (assertionClasses.length() > 0) {
                     assertionClasses = assertionClasses.substring(1)
