@@ -55,7 +55,7 @@ mavenUrl       | This is the artifact repository url to publish to.
 
 ### publish to local
 You can also publish the modular assertion builder to your local maven repository by running:
-```gradle -i publishToMavenLocal```
+`gradle install`
 
 ## How You Can Contribute
 Contributions are welcome and much appreciated. To learn more, see the [Contribution Guidelines][contributing].

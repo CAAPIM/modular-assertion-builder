@@ -47,6 +47,9 @@ class ModularAssertionBuilder implements Plugin<Project> {
 
         //builds the aar configuration
         project.task('configureAAR') {
+            description = 'Packages the .aar file'
+            group = 'build'
+            
             doLast {
                 FileTree tree = project.fileTree(
                         include: '**/*Assertion.java',
