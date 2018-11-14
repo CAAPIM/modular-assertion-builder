@@ -134,7 +134,8 @@ class ModularAssertionBuilder implements Plugin<Project> {
                         "Implementation-Vendor": "Layer 7 Technologies",
                         "Implementation-Vendor-Id": "com.l7tech",
                         "ModularAssertion-Private-Libraries": "",
-                        "Revision": "$modularAssertionBuilder.revision"
+                        "Revision": "$modularAssertionBuilder.revision",
+                        "GatewayBaseVersion": "$modularAssertionBuilder.gatewayBaseVersion"
                 )
             }
             extension = "aar"
