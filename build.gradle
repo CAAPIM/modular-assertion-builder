@@ -59,40 +59,70 @@ artifacts {
     archives javadocJar, sourceJar
 }
 
-// Create the pom configuration:
-def pomConfig = {
-    scm {
-        url 'https://github.com/ca-api-gateway/modular-assertion-builder'
-    }
-
-    licenses {
-        license {
-            name 'MIT'
-            url 'https://github.com/ca-api-gateway/modular-assertion-builder/blob/master/LICENSE'
-        }
-    }
-
-    developers {
-        developer {
-            id 'apigatewayopensource'
-            name 'CA API Gateway Bot'
-            email 'API-Gateway-OpenSource@ca.com'
-        }
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": name,
+                "Implementation-Version": version)
     }
 }
 
 publishing {
     publications {
-        BinTrayPublication(MavenPublication) {
+        gwPlugin( MavenPublication ) {
             from components.java
-            artifact sourceJar
-            artifact javadocJar
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', project.description)
-                root.appendNode('name', project.name)
-                root.appendNode('url', 'https://github.com/ca-api-gateway/modular-assertion-builder')
-                root.children().last() + pomConfig
+
+            artifact( sourceJar ) {
+                classifier = 'sources'
+            }
+
+            artifact( javadocJar ) {
+                classifier = "javadoc"
+            }
+        }
+    }
+}
+
+// Create the pom configuration:
+publishing {
+    publications {
+        gwPlugin( MavenPublication ) {
+            pom {
+                name = project.name
+                description = project.description
+                url = 'https://github.com/ca-api-gateway/modular-assertion-builder'
+
+                organization {
+                    name = 'CA API Gateway'
+                    url = 'https://github.com/ca-api-gateway'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/ca-api-gateway/modular-assertion-builder/blob/master/LICENSE'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/ca-api-gateway/modular-assertion-builder'
+                    connection = 'scm:git:https://github.com/ca-api-gateway/modular-assertion-builder.git'
+                    developerConnection = 'scm:git:git@github.com:ca-api-gateway/modular-assertion-builder.git'
+                }
+
+                issueManagement {
+                    system = 'github'
+                    url = 'https://github.com/ca-api-gateway/modular-assertion-builder/issues'
+                }
+
+                developers {
+                    developer {
+                        id = 'apigatewayopensource'
+                        name = 'CA API Gateway Bot'
+                        email = 'API-Gateway-OpenSource@ca.com'
+                        organization = 'CA API Gateway'
+                        organizationUrl = 'https://github.com/ca-api-gateway'
+                    }
+                }
             }
         }
     }
@@ -101,10 +131,10 @@ publishing {
 bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    publications = ['BinTrayPublication']
+    publications = ['gwPlugin']
     publish = true
     pkg {
-        repo = 'gateway-developer-plugin'
+        repo = 'modular-assertion-builder'
         userOrg = 'ca-api-gateway'
         name = project.name
         desc = project.description
@@ -114,13 +144,14 @@ bintray {
         vcsUrl = 'https://github.com/ca-api-gateway/modular-assertion-builder.git'
         githubRepo = 'ca-api-gateway/modular-assertion-builder'
         version {
-            name = version
+            name = project.version
             released = new Date()
-            vcsTag = 'release/' + version
+            vcsTag = 'release/' + project.version
             gpg {
                 sign = true
             }
             mavenCentralSync {
+                sync = true
                 user = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSS_USER') //OSS user token: mandatory
                 password = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSS_PASSWORD') //OSS user password: mandatory
             }
@@ -140,4 +171,8 @@ pluginBundle {
             tags = ['ca api gateway','building']
         }
     }
+}
+
+wrapper {
+    gradleVersion = '4.10.2'
 }
