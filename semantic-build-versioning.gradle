@@ -1,0 +1,4 @@
+startingVersion = '0.5.0'
+tagPrefix = 'release/'
+
+tagPattern = ~/release\/\d++\.5\.\d++/
