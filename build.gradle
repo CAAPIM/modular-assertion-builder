@@ -136,7 +136,6 @@ bintray {
         desc = project.description
         licenses = ['MIT']
         websiteUrl = 'https://github.com/ca-api-gateway/modular-assertion-builder'
-        issueTrackerUrl = 'https://waffle.io/ca-api-gateway/modular-assertion-builder'
         vcsUrl = 'https://github.com/ca-api-gateway/modular-assertion-builder.git'
         githubRepo = 'ca-api-gateway/modular-assertion-builder'
         version {
