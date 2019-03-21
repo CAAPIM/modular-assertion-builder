@@ -1,2 +1,2 @@
-tagPrefix = 'release/'
 startingVersion = '0.5.0'
+tagPrefix = 'release/'
