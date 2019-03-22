@@ -49,42 +49,41 @@ class ModularAssertionBuilder implements Plugin<Project> {
         project.task('configureAAR') {
             description = 'Packages the .aar file'
             group = 'build'
-            
+
+            def getAssertionClasses = { sources, Map<String, ?> args ->
+                sources.collectMany { File dir ->
+                    FileTree tree = project.fileTree(dir: dir, *: args)
+                    tree.collect { File file ->
+                        def path = file.path
+                                .replace(dir.toString(), '') // removing base directory
+                                .replace("\\", "/") // for win machines
+                        if (path.startsWith("/")) {
+                            // removing leading slash
+                            return path.substring(1)
+                        }
+                        path
+                    }
+                }
+            }
+
             doLast {
-                FileTree tree = project.fileTree(
+                def assertionClasses = getAssertionClasses(
+                    project.sourceSets.main.java.getSrcDirs(),
+                    [
                         include: '**/*Assertion.java',
-                        exclude: ['**/console/**/*', '**/client/**/*', '**/server/**/*']
-                )
-                project.sourceSets.main.java.getSrcDirs().each { tree.dir = it }
-                def assertionClasses = ''
-                tree.each { File file ->
-                    assertionClasses = assertionClasses + ' ' + file.path.replaceAll('.*/src/main/java/', '').replaceAll('\\.java', '').replaceAll('/', '.').replaceAll('.*\\\\src\\\\main\\\\java\\\\','').replaceAll('\\\\','.')
-                }
-                if (assertionClasses.length() > 0) {
-                    assertionClasses = assertionClasses.substring(1)
-                }
+                        exclude: ['**/console/**/*', '**/client/**/*', '**/server/**/*'],
+                    ],
+                ).collect { it.replaceAll('\\.java', '').replaceAll('/', '.') }.join(' ')
                 project.jar.manifest {
                     attributes('ModularAssertion-List': assertionClasses)
                 }
 
-                tree = project.fileTree(
-                        dir: "${project.sourceSets.main.output.classesDir}",
-                        exclude: ['**/console/**/*', '**/client/**/*', '**/server/**/*']
-                )
-                assertionClasses = ''
-                tree.each { File file ->
-                    def path = file.path.replaceAll('.*/build/classes/java/main/', '')
-                            .replace(project.sourceSets.main.output.classesDir.toString(),'')
-                            .replace("\\", "/")     // for win machines
-                    if (path.startsWith("/")) {
-                        // removing leading slash
-                        path.substring(1)
-                    }
-                    assertionClasses = assertionClasses + '\n' + path
-                }
-                if (assertionClasses.length() > 0) {
-                    assertionClasses = assertionClasses.substring(1)
-                }
+                assertionClasses = getAssertionClasses(
+                        project.sourceSets.main.output.classesDirs,
+                        [
+                            exclude: ['**/console/**/*', '**/client/**/*', '**/server/**/*'],
+                        ],
+                ).join('\n')
 
                 def assertionsIndexFile = new File("${project.jar.temporaryDir}/assertion.index")
                 assertionsIndexFile.text = "$assertionClasses"
@@ -92,29 +91,12 @@ class ModularAssertionBuilder implements Plugin<Project> {
                     from assertionsIndexFile
                 }
 
-                tree = project.fileTree(
-                        dir: "${project.sourceSets.main.output.classesDir}",
-                        include: ['**/console/**/*']
-                ) + project.fileTree(
-                        dir: "${project.sourceSets.main.output.resourcesDir}",
-                        include: ['**/console/**/*']
-                )
-
-
-                assertionClasses = ''
-                tree.each { File file ->
-                    def path = file.path.replaceAll('.*/build/(classes/java|resources)/main/', '')
-                            .replace(project.sourceSets.main.output.classesDir.toString(),'')
-                            .replace("\\", "/") // for win machines
-                    if (path.startsWith("/")) {
-                        // removing leading slash
-                        path.substring(1)
-                    }
-                    assertionClasses = assertionClasses + '\n' + path
-                }
-                if (assertionClasses.length() > 0) {
-                    assertionClasses = assertionClasses.substring(1)
-                }
+                assertionClasses = getAssertionClasses(
+                    project.sourceSets.main.output.classesDirs + project.sourceSets.main.output.resourcesDir,
+                    [
+                        include: ['**/console/**/*'],
+                    ],
+                ).join('\n')
 
                 def consoleIndexFile = new File("${project.jar.temporaryDir}/console.index")
                 consoleIndexFile.text = "$assertionClasses"
@@ -153,4 +135,3 @@ class ModularAssertionBuilder implements Plugin<Project> {
         }
     }
 }
-
