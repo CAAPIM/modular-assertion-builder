@@ -10,6 +10,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencyResolutionListener
 import org.gradle.api.artifacts.ResolvableDependencies
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileTree
 
 class ModularAssertionBuilder implements Plugin<Project> {
@@ -29,7 +30,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 //makes it so that release jars do bring in their dependencies
                 transitive = true
             }
-            compile {
+            implementation {
                 extendsFrom releaseJars
             }
         }
@@ -129,6 +130,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 )
             }
             extension = "aar"
+            setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
             into('AAR-INF/lib') {
                 from project.configurations.releaseJars
             }
