@@ -80,7 +80,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                 }
 
                 assertionClasses = getAssertionClasses(
-                        project.sourceSets.main.output.classesDirs,
+                        project.sourceSets.main.output.classesDirs + project.sourceSets.main.output.resourcesDir,
                         [
                             exclude: ['**/console/**/*', '**/client/**/*', '**/server/**/*'],
                         ],
