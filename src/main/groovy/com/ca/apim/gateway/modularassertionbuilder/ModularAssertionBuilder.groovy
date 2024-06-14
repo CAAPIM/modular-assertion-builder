@@ -112,8 +112,8 @@ class ModularAssertionBuilder implements Plugin<Project> {
     def addJar(modularAssertionBuilder) {
         // creates the aar
         project.jar {
-            version = "$project.version"
-            baseName = "$modularAssertionBuilder.assertionName"
+            archiveVersion = "$project.version"
+            archiveBaseName = "$modularAssertionBuilder.assertionName"
             manifest {
                 attributes(
                         "Specification-Title": "ModularAssertion",
@@ -129,7 +129,7 @@ class ModularAssertionBuilder implements Plugin<Project> {
                         "GatewayBaseVersion": "$modularAssertionBuilder.gatewayBaseVersion"
                 )
             }
-            extension = "aar"
+            archiveExtension = "aar"
             setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
             into('AAR-INF/lib') {
                 from project.configurations.releaseJars
