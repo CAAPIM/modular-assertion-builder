@@ -144,5 +144,5 @@ model {
 task generatePomFile( dependsOn: 'generatePomFileForGwPluginPublication' )
 
 wrapper {
-    gradleVersion = '4.10.2'
+    gradleVersion = '7.4.2'
 }
