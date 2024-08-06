@@ -23,7 +23,6 @@ apply plugin: 'base'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'groovy'
-apply plugin: 'maven'
 apply plugin: 'com.srcclr.gradle'
 apply plugin: 'maven-publish'
 
@@ -31,8 +30,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile gradleApi()
-    testCompile 'junit:junit:4.12'
+    implementation gradleApi()
+    testImplementation 'junit:junit:4.12'
 }
 
 repositories {
@@ -64,7 +63,7 @@ jar {
     manifest {
         attributes(
                 "Implementation-Title": name,
-                "Implementation-Version": version)
+                "Implementation-Version": archiveVersion)
     }
 }
 
@@ -145,5 +144,5 @@ model {
 task generatePomFile( dependsOn: 'generatePomFileForGwPluginPublication' )
 
 wrapper {
-    gradleVersion = '4.10.2'
+    gradleVersion = '7.4.2'
 }
