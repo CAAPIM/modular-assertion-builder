@@ -60,6 +60,9 @@ mavenUrl       | This is the artifact repository url to publish to.
 You can also publish the modular assertion builder to your local maven repository by running:
 `gradle install`
 
+## Branching Strategy
+The naming convention of our branches corresponds to the compatible Gradle version. For instance, the `7.x` branch corresponds to the branch compatible with Gradle 7.x.
+
 ## How You Can Contribute
 Contributions are welcome and much appreciated. To learn more, see the [Contribution Guidelines][contributing].
 
