@@ -6,6 +6,12 @@
 The modular assertion builder is a gradle plugin that can be used to build modular assertions for the CA API Gateway
 
 # Usage
+The latest published artifact version on Maven Central is 0.5.1, built with Gradle 4.10.2. For new builds, build and publish the plugin to your own plugin repository.
+
+## Branching Strategy
+The naming convention of our branches corresponds to the compatible Gradle version. For instance, the `7.x` branch corresponds to the branch compatible with Gradle 7.x.
+
+## Gradle Configuration
 In order to use this plugin to build a modular assertion add the following you your gradle file:
 
 ```groovy
@@ -65,7 +71,7 @@ Contributions are welcome and much appreciated. To learn more, see the [Contribu
 
 ## License
 
-Copyright (c) 2017 CA. All rights reserved.
+Copyright © 2017-2024. Broadcom Inc. and its subsidiaries. All Rights Reserved.
 
 This software may be modified and distributed under the terms
 of the MIT license. See the [LICENSE][license-link] file for details.
