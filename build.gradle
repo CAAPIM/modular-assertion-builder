@@ -7,7 +7,6 @@ plugins {
     id "com.gradle.plugin-publish" version "0.10.0"
     id "org.sonarqube" version "2.6.2"
     id "com.srcclr.gradle" version "3.0.3"
-    id "com.jfrog.bintray" version "1.8.4"
 }
 
 description = 'The modular assertion builder plugin can be used to build modular assertions for the CA API Gateway'
@@ -24,17 +23,15 @@ apply plugin: 'base'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'groovy'
-apply plugin: 'maven'
 apply plugin: 'com.srcclr.gradle'
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile gradleApi()
-    testCompile 'junit:junit:4.12'
+    implementation gradleApi()
+    testImplementation 'junit:junit:4.12'
 }
 
 repositories {
@@ -66,7 +63,7 @@ jar {
     manifest {
         attributes(
                 "Implementation-Title": name,
-                "Implementation-Version": version)
+                "Implementation-Version": archiveVersion)
     }
 }
 
@@ -124,36 +121,6 @@ publishing {
     }
 }
 
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    publications = ['gwPlugin']
-    publish = true
-    pkg {
-        repo = 'modular-assertion-builder'
-        userOrg = 'ca-api-gateway'
-        name = project.name
-        desc = project.description
-        licenses = ['MIT']
-        websiteUrl = 'https://github.com/ca-api-gateway/modular-assertion-builder'
-        vcsUrl = 'https://github.com/ca-api-gateway/modular-assertion-builder.git'
-        githubRepo = 'ca-api-gateway/modular-assertion-builder'
-        version {
-            name = project.version
-            released = new Date()
-            vcsTag = 'release/' + project.version
-            gpg {
-                sign = true
-            }
-            mavenCentralSync {
-                sync = true
-                user = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSS_USER') //OSS user token: mandatory
-                password = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSS_PASSWORD') //OSS user password: mandatory
-            }
-        }
-    }
-}
-
 pluginBundle {
     website = 'https://github.com/ca-api-gateway/modular-assertion-builder'
     vcsUrl = 'https://github.com/ca-api-gateway/modular-assertion-builder'
@@ -177,5 +144,5 @@ model {
 task generatePomFile( dependsOn: 'generatePomFileForGwPluginPublication' )
 
 wrapper {
-    gradleVersion = '4.10.2'
+    gradleVersion = '7.4.2'
 }
